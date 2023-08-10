@@ -14,10 +14,11 @@ class contactForm(forms.Form):
     # balance = forms.DecimalField()
     age = forms.CharField(widget=forms.NumberInput)
     check = forms.BooleanField()
-    birthday = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-    appointment = forms.DateTimeField(
+    birthday = forms.CharField(widget=forms.DateInput(attrs={'type': 'date'}))
+    appointment = forms.CharField(
         widget=forms.DateInput(attrs={'type': 'datetime-local'}))
     CHOICES = [('S', 'Small'), ('M', 'Medium'), ('L', 'Large')]
-    size = forms.ChoiceField(choices=CHOICES)
+    size = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect)
     meal = [('p', 'pepperoni'), ('M', 'Mashroom'), ('B', 'Beef')]
-    pizza = forms.MultipleChoiceField(choices=meal)
+    pizza = forms.MultipleChoiceField(
+        choices=meal, widget=forms.CheckboxSelectMultiple)

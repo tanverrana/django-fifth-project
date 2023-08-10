@@ -66,3 +66,19 @@ class StudentData(forms.Form):
         34, message="Age maximum 34"), validators.MinValueValidator(24, message="age must minimum 24")])
     file = forms.FileField(
         validators=[validators.FileExtensionValidator(allowed_extensions=['pdf', 'png', 'jpeg'], message="Upload pdf file")])
+
+
+class PasswordValidationProject(forms.Form):
+    name = forms.CharField(widget=forms.TextInput)
+    password = forms.CharField(widget=forms.PasswordInput)
+    confirm_password = forms.CharField(widget=forms.PasswordInput)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        val_name = self.cleaned_data['name']
+        val_pass = self.cleaned_data['password']
+        val_conpass = self.cleaned_data['confirm_password']
+        if val_conpass != val_pass:
+            raise forms.ValidationError("Password doesn't match")
+        if len(val_name) < 15:
+            raise forms.ValidationError("Name at least 15 char")

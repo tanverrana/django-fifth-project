@@ -2,8 +2,9 @@ from django import forms
 
 
 class contactForm(forms.Form):
-    name = forms.CharField(label="User Name")
-    file = forms.FileField()
+    name = forms.CharField(
+        label="User Name:", initial="Tanver", help_text="Total length 70 char", required=False, disabled=True)
+    # file = forms.FileField()
 
     # email = forms.EmailField(label="User Email")
     # age = forms.IntegerField()

@@ -22,3 +22,31 @@ class contactForm(forms.Form):
     meal = [('p', 'pepperoni'), ('M', 'Mashroom'), ('B', 'Beef')]
     pizza = forms.MultipleChoiceField(
         choices=meal, widget=forms.CheckboxSelectMultiple)
+
+
+class StudentData(forms.Form):
+    name = forms.CharField(widget=forms.TextInput)
+    email = forms.CharField(widget=forms.EmailInput)
+
+    # def clean_name(self):
+    #     valname = self.cleaned_data['name']
+    #     if len(valname) < 10:
+    #         raise forms.ValidationError(
+    #             "Enter a name with at least 10 charecter.")
+    #     return valname
+
+    # def clean_email(self):
+    #     valemail = self.cleaned_data['email']
+    #     if '.com' not in valemail:
+    #         raise forms.ValidationError("Email must contain .com")
+    #     return valemail
+    def clean(self):
+        cleaned_data = super().clean()
+        valname = self.cleaned_data['name']
+        valemail = self.cleaned_data['email']
+        if len(valname) < 10:
+            raise forms.ValidationError(
+                "Enter a name with at least 10 charecter.")
+
+        if '.com' not in valemail:
+            raise forms.ValidationError("Email must contain .com")

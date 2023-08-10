@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form method="POST">
+<form method="POST" action="/about/">
     {% csrf_token %}
     <div class="mb-3">
         <label for="exampleInputName" class="form-label">Name</label>
@@ -13,4 +13,5 @@
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+
 {%endblock%}

@@ -1,5 +1,5 @@
 from django import forms
-
+from django.core import validators
 # widgets == field to html input
 
 
@@ -24,9 +24,9 @@ class contactForm(forms.Form):
         choices=meal, widget=forms.CheckboxSelectMultiple)
 
 
-class StudentData(forms.Form):
-    name = forms.CharField(widget=forms.TextInput)
-    email = forms.CharField(widget=forms.EmailInput)
+# class StudentData(forms.Form):
+#     name = forms.CharField(widget=forms.TextInput)
+#     email = forms.CharField(widget=forms.EmailInput)
 
     # def clean_name(self):
     #     valname = self.cleaned_data['name']
@@ -40,13 +40,29 @@ class StudentData(forms.Form):
     #     if '.com' not in valemail:
     #         raise forms.ValidationError("Email must contain .com")
     #     return valemail
-    def clean(self):
-        cleaned_data = super().clean()
-        valname = self.cleaned_data['name']
-        valemail = self.cleaned_data['email']
-        if len(valname) < 10:
-            raise forms.ValidationError(
-                "Enter a name with at least 10 charecter.")
+    # def clean(self):
+    #     cleaned_data = super().clean()
+    #     valname = self.cleaned_data['name']
+    #     valemail = self.cleaned_data['email']
+    #     if len(valname) < 10:
+    #         raise forms.ValidationError(
+    #             "Enter a name with at least 10 charecter.")
 
-        if '.com' not in valemail:
-            raise forms.ValidationError("Email must contain .com")
+    #     if '.com' not in valemail:
+    #         raise forms.ValidationError("Email must contain .com")
+
+def len_check(value):
+    if len(value) < 10:
+        raise forms.ValidationError('At least 10 charecters')
+
+
+class StudentData(forms.Form):
+    name = forms.CharField(validators=[
+                           validators.MaxLengthValidator(10, message='At least maximum 10 char')])
+    text = forms.CharField(widget=forms.TextInput, validators=[len_check])
+    email = forms.CharField(widget=forms.EmailInput, validators=[
+                            validators.EmailValidator(message="Valid email")])
+    age = forms.IntegerField(validators=[validators.MaxValueValidator(
+        34, message="Age maximum 34"), validators.MinValueValidator(24, message="age must minimum 24")])
+    file = forms.FileField(
+        validators=[validators.FileExtensionValidator(allowed_extensions=['pdf', 'png', 'jpeg'], message="Upload pdf file")])
